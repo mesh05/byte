@@ -9,6 +9,7 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
+        // Add logic here to look up the user from the DB
         const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
 
         if (user) {
@@ -19,7 +20,4 @@ export const authOptions = {
       },
     }),
   ],
-  pages: {
-    signIn: "/",
-  },
 };
