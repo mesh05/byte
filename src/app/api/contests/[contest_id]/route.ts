@@ -8,7 +8,7 @@ export async function GET(
   res: NextApiResponse
 ) {
   const contestid = params.contest_id;
-  const contest = await conn.query(
+  const contest: any = await conn.query(
     "SELECT * FROM contest where contest_id = ?",
     [contestid]
   );
