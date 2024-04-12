@@ -8,7 +8,9 @@ export default function Contests() {
   const router = useRouter();
   useEffect(() => {
     axios.get("/api/contests").then((res) => {
-      setContests(res.data.contests);
+      if (res.data) {
+        setContests(res.data.contests);
+      }
     });
   }, []);
   return (
@@ -19,10 +21,13 @@ export default function Contests() {
           <div key={contest.contest_id}>
             Contest name:{" "}
             <button
-              onClick={() => router.push("/contest/" + contest.contest_id)}
+              onClick={() => router.push(`/contest/${contest.contest_id}`)}
             >
               {contest.contest_name}
             </button>
+            <br></br>
+            <div>Status: {contest.status}</div>
+            <br></br>
           </div>
         );
       })}
