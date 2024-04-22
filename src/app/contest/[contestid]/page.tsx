@@ -21,6 +21,7 @@ export default function Contest({ params }: any) {
       <button onClick={() => router.push(`/contest/${contest.contest_id}/1`)}>
         problem 1
       </button>
+      
     </div>
   );
 }

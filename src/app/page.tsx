@@ -1,5 +1,5 @@
 "use client";
-import { SignIn } from "@/components/Signin";
+import { SignIn } from "@/components/ui/Signin";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 

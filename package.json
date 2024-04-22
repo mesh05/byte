@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "@codemirror/autocomplete": "^6.16.0",
+    "@codemirror/lang-cpp": "^6.0.2",
+    "@codemirror/lang-java": "^6.0.1",
     "@codemirror/lang-javascript": "github:codemirror/lang-javascript",
+    "@codemirror/lang-python": "^6.1.5",
     "@uiw/codemirror-theme-vscode": "^4.21.25",
     "@uiw/react-codemirror": "^4.21.25",
     "axios": "^1.6.8",
@@ -18,7 +21,8 @@
     "next": "14.1.4",
     "next-auth": "^4.24.7",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "recoil": "^0.7.7"
   },
   "devDependencies": {
     "@types/node": "^20.12.7",
