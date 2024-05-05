@@ -1,37 +1,51 @@
 import CodeMirror from "@uiw/react-codemirror";
 import { javascriptLanguage } from "@codemirror/lang-javascript";
-import { cppLanguage } from "@codemirror/lang-cpp";
-import { javaLanguage } from "@codemirror/lang-java";
-import { pythonLanguage } from "@codemirror/lang-python";
+// import { cppLanguage } from "@codemirror/lang-cpp";
+// import { javaLanguage } from "@codemirror/lang-java";
+// import { pythonLanguage } from "@codemirror/lang-python";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { useState } from "react";
 import axios from "axios";
 import LanguageSelector from "./LanguageSelector";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { recoilLanguage } from "../recoil/atom";
-
-// TODO: Add more languages
-
-const Languages: any = {
-  C: cppLanguage,
-  "C++": cppLanguage,
-  Java: javaLanguage,
-  Python: pythonLanguage,
-};
+import { version } from "os";
 
 export default function EditorPage() {
-  const [code, setCode] = useState("console.log('hello world!');");
-  const language = useRecoilValue(recoilLanguage);
-  let extensions = [Languages[language]];
+  // function changeLang(){
+  //   setSelectedLanguage()
+  // }
+
+  const [language, setLanguage]: any = useRecoilState(recoilLanguage);
+  const [selectedLanguage, setSelectedLanguage] = useState("c");
+  const [code, setCode] = useState(language[selectedLanguage].code);
+  const [output, setOutput] = useState({ run: { output: "" } });
+  let extensions = [language[selectedLanguage].lang];
 
   return (
     <>
       <div>
-        <LanguageSelector />
+        <LanguageSelector
+          setSelectedLanguage={setSelectedLanguage}
+          setCode={setCode}
+        />
+        <button
+          onClick={() => {
+            axios
+              .post("/api/run", { language: selectedLanguage, code: code })
+              .then((res) => {
+                console.log(res.data);
+                setOutput(res.data.output);
+              });
+          }}
+        >
+          RUN
+        </button>
+        <button>SUBMIT</button>
         <CodeMirror
           value={code}
           width="750px"
-          height="650px"
+          height="500px"
           theme={vscodeDark}
           extensions={extensions}
           style={{ fontSize: 18 }}
@@ -39,17 +53,11 @@ export default function EditorPage() {
             setCode(editor);
           }}
         />
-        <button
-          onClick={() => {
-            axios.post("/api/run", { code: code }).then((res) => {
-              console.log(res.data);
-            });
-          }}
-        >
-          RUN
-        </button>
-        <button>SUBMIT</button>
-        {language}
+        <br></br>
+        <br></br>
+        OUTPUT:<br></br>
+        {output.run.output}
+        {/* {selectedLanguage} */}
       </div>
     </>
   );

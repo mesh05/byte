@@ -12,8 +12,17 @@ export async function GET(
     "SELECT * FROM contest where contest_id = ?",
     [contestid]
   );
+  const problem_set: any = await conn.query(
+    "SELECT c.problem_id,p.problem_title,c.contest_problem_id FROM problems as p inner join contest_problems as c on c.problem_id=p.problem_id where contest_id=?",
+    [contestid]
+  );
   if (contest) {
-    return NextResponse.json({ status: "success", contest: contest[0][0] });
+    // If contest exists then its problem set will definitely exist(maybe)
+    return NextResponse.json({
+      status: "success",
+      contest: contest[0][0],
+      problem_set: problem_set[0],
+    });
   }
   // return NextResponse.json({ status: "error", message: "Contest not found" });
 }

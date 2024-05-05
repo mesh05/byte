@@ -1,17 +1,21 @@
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { recoilLanguage } from "../recoil/atom";
 import { useState } from "react";
 
-const LANGUAGES = ["C", "C++", "Java", "Python"];
+const LANGUAGES = ["c", "c++", "java", "python"];
 
-export default function LanguageSelector() {
-  const setLanguage = useSetRecoilState(recoilLanguage);
+export default function LanguageSelector({
+  setSelectedLanguage,
+  setCode,
+}: any) {
+  const [language, setLanguage]: any = useRecoilState(recoilLanguage);
   return (
     <div>
       <select
         id="language-selector"
         onChange={(e) => {
-          setLanguage(e.target.value);
+          setSelectedLanguage(e.target.value);
+          setCode(language[e.target.value].code);
         }}
       >
         {LANGUAGES.map((lang) => {
