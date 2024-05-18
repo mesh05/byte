@@ -1,26 +1,24 @@
 "use client";
 import EditorPage from "@/components/codeEditor/EditorPage";
+import { Problem } from "@/components/ui/Problem";
+import Split from "react-split";
+import "../../../globals.css";
 import axios from "axios";
-import { useEffect, useState } from "react";
 
-// TODO: Error when user tries to access a problem that doesnt exist
+// TODO: Problem doesn't exist is handled client side....make it server side (maybe 404 page)
 
-export default function Problem({ params }: any) {
-  const [problem, setProblem]: any = useState({});
-  useEffect(() => {
-    axios.get(`/api/problem/${params.problemid}`).then((res) => {
-      if (res.data.problem) {
-        setProblem(res.data.problem);
-      }
-    });
-  }, []);
+export default function Workspace({ params }: any) {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between" }}>
-      <div>
-        <h1>{problem.problem_title}</h1>
-        <p>{problem.problem_description}</p>
-      </div>
-      <EditorPage />
+    <div style={{ height: "100vh" }}>
+      {/* <div>NAVBAR</div> */}
+      <Split
+        className="split-horizontal"
+        style={{ height: "100vh" }}
+        sizes={[50, 50]}
+      >
+        <Problem problemid={params.problemid} />
+        <EditorPage />
+      </Split>
     </div>
   );
 }

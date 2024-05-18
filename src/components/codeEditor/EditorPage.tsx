@@ -10,11 +10,11 @@ import LanguageSelector from "./LanguageSelector";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { recoilLanguage } from "../recoil/atom";
 import { version } from "os";
+import { Output } from "../ui/Output";
+import Split from "react-split";
+import "../../app/globals.css";
 
 export default function EditorPage() {
-  // function changeLang(){
-  //   setSelectedLanguage()
-  // }
 
   const [language, setLanguage]: any = useRecoilState(recoilLanguage);
   const [selectedLanguage, setSelectedLanguage] = useState("c");
@@ -23,13 +23,36 @@ export default function EditorPage() {
   let extensions = [language[selectedLanguage].lang];
 
   return (
-    <>
+    <div style={{ height: "100vh" }}>
       <div>
         <LanguageSelector
           setSelectedLanguage={setSelectedLanguage}
           setCode={setCode}
         />
+
+        <Split
+          className="split-vertical"
+          direction="vertical"
+          minSize={60}
+          sizes={[60, 40]}
+          style={{ height: "94vh" }}
+        >
+          <div className="w-full overflow-auto">
+            <CodeMirror
+              value={code}
+              theme={vscodeDark}
+              extensions={extensions}
+              style={{ fontSize: 18 }}
+              minHeight="90vh"
+              onChange={(editor, change) => {
+                setCode(editor);
+              }}
+            />
+          </div>
+          <Output output={output} />
+        </Split>
         <button
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4"
           onClick={() => {
             axios
               .post("/api/run", { language: selectedLanguage, code: code })
@@ -41,24 +64,10 @@ export default function EditorPage() {
         >
           RUN
         </button>
-        <button>SUBMIT</button>
-        <CodeMirror
-          value={code}
-          width="750px"
-          height="500px"
-          theme={vscodeDark}
-          extensions={extensions}
-          style={{ fontSize: 18 }}
-          onChange={(editor, change) => {
-            setCode(editor);
-          }}
-        />
-        <br></br>
-        <br></br>
-        OUTPUT:<br></br>
-        {output.run.output}
-        {/* {selectedLanguage} */}
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4">
+          SUBMIT
+        </button>
       </div>
-    </>
+    </div>
   );
 }
