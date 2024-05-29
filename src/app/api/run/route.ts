@@ -1,5 +1,6 @@
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
+import { stdin } from "process";
 
 const LANG: any = {
   c: "10.2.0",
@@ -20,6 +21,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         content: code,
       },
     ],
+    stdin: data.stdin,
   });
   return NextResponse.json({
     status: "successfully received code",

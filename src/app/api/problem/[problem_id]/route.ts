@@ -7,7 +7,7 @@ export async function GET(
   res: NextResponse
 ) {
   const problem: any = await conn.query(
-    "SELECT c.contest_problem_id,c.problem_id,p.problem_title,p.problem_description,p.problem_difficulty FROM problems as p inner join contest_problems as c on c.problem_id=p.problem_id where c.contest_problem_id=?",
+    "SELECT c.contest_problem_id,c.problem_id,p.problem_title,p.problem_description,p.problem_difficulty,p.problem_test_case,p.problem_output FROM problems as p inner join contest_problems as c on c.problem_id=p.problem_id where c.contest_problem_id=?",
     [params.problem_id]
   );
   if (problem[0].length === 0)

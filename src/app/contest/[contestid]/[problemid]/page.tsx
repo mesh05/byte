@@ -5,8 +5,6 @@ import Split from "react-split";
 import "../../../globals.css";
 import axios from "axios";
 
-// TODO: Problem doesn't exist is handled client side....make it server side (maybe 404 page)
-
 export default function Workspace({ params }: any) {
   return (
     <div style={{ height: "100vh" }}>

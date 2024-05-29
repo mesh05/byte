@@ -3,14 +3,19 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { recoilProblem } from "../recoil/atom";
+
+// TODO: Make this a server side rendered page (if thats possible)
 
 export function Problem({ problemid }: any) {
-  const [problem, setProblem]: any = useState(null);
+  const [problem, setProblem]: any = useRecoilState(recoilProblem);
   const router = useRouter();
   useEffect(() => {
     axios.get(`/api/problem/${problemid}`).then((res) => {
       try {
         if (res.data.problem) {
+          console.log(res.data.problem.problem_test_case);
           setProblem(res.data.problem);
         } else {
           throw new Error("Problem doesn't exist");
@@ -27,6 +32,7 @@ export function Problem({ problemid }: any) {
         onClick={() => {
           router.back();
         }}
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
       >
         back
       </button>
@@ -34,6 +40,24 @@ export function Problem({ problemid }: any) {
         {problem.problem_title}
       </h1>
       <p>{problem.problem_description}</p>
+      <br></br>
+      Test Case:
+      <br></br>
+      <textarea
+        readOnly
+        style={{ resize: "none" }}
+        value={problem.problem_test_case}
+      ></textarea>
+      {/* <pre>{problem.problem_test_case}</pre> */}
+      <br></br>
+      Output:
+      <br></br>
+      {/* <p>{problem.problem_output}</p> */}
+      <textarea
+        readOnly
+        style={{ resize: "none" }}
+        value={problem.problem_output}
+      ></textarea>
     </div>
   );
 }

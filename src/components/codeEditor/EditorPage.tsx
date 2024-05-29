@@ -8,18 +8,18 @@ import { useState } from "react";
 import axios from "axios";
 import LanguageSelector from "./LanguageSelector";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { recoilLanguage } from "../recoil/atom";
+import { recoilLanguage, recoilProblem } from "../recoil/atom";
 import { version } from "os";
 import { Output } from "../ui/Output";
 import Split from "react-split";
 import "../../app/globals.css";
 
 export default function EditorPage() {
-
   const [language, setLanguage]: any = useRecoilState(recoilLanguage);
   const [selectedLanguage, setSelectedLanguage] = useState("c");
   const [code, setCode] = useState(language[selectedLanguage].code);
   const [output, setOutput] = useState({ run: { output: "" } });
+  const [problem, setProblem]: any = useRecoilState(recoilProblem);
   let extensions = [language[selectedLanguage].lang];
 
   return (
@@ -55,7 +55,11 @@ export default function EditorPage() {
           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4"
           onClick={() => {
             axios
-              .post("/api/run", { language: selectedLanguage, code: code })
+              .post("/api/run", {
+                language: selectedLanguage,
+                code: code,
+                stdin: problem.problem_test_case,
+              })
               .then((res) => {
                 console.log(res.data);
                 setOutput(res.data.output);
@@ -64,7 +68,20 @@ export default function EditorPage() {
         >
           RUN
         </button>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4">
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4"
+          onClick={() => {
+            axios
+              .post("/api/submit", {
+                language: selectedLanguage,
+                code: code,
+                problem_id: problem.problem_id,
+              })
+              .then((res) => {
+                console.log(res.data);
+              });
+          }}
+        >
           SUBMIT
         </button>
       </div>
