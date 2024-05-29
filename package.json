@@ -16,6 +16,7 @@
     "@codemirror/lang-python": "^6.1.5",
     "@uiw/codemirror-theme-vscode": "^4.21.25",
     "@uiw/react-codemirror": "^4.21.25",
+    "autosize": "^6.0.1",
     "axios": "^1.6.8",
     "mysql2": "^3.9.4",
     "next": "14.1.4",
@@ -26,6 +27,7 @@
     "recoil": "^0.7.7"
   },
   "devDependencies": {
+    "@types/autosize": "^4.0.3",
     "@types/node": "^20.12.7",
     "@types/react": "^18",
     "@types/react-dom": "^18",
