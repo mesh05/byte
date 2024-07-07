@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import conn from "@/components/db/db";
 
-export async function GET(
+async function handler(
   req: NextRequest,
   { params }: { params: { problem_id: string } },
   res: NextResponse
@@ -14,3 +14,5 @@ export async function GET(
     return NextResponse.json({ status: "400", error: "Problem not found" });
   return NextResponse.json({ status: "success", problem: problem[0][0] });
 }
+
+export { handler as GET };

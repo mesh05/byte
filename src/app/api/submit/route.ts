@@ -1,6 +1,5 @@
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
-import { stdin } from "process";
 import conn from "@/components/db/db";
 
 const LANG: any = {
@@ -29,7 +28,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
     ],
     stdin: hidden_test_case,
   });
-  if (output.data.run.output === hidden_case[0][0].hidden_output) {
+  if (
+    output.data.run.output.trim("\n") ===
+    hidden_case[0][0].hidden_output.trim("\n")
+  ) {
     return NextResponse.json({
       status: "successfully received code",
       result: "correct",
@@ -41,7 +43,3 @@ export async function POST(req: NextRequest, res: NextResponse) {
     });
   }
 }
-//   return NextResponse.json({
-//     status: "successfully received code",
-//     output: output.data,
-//   });

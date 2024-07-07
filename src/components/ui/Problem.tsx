@@ -2,18 +2,19 @@
 
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { recoilProblem } from "../recoil/atom";
+import { TextArea } from "@/components/ui/TextArea";
 // import autosize from "autosize";
 
 // TODO: Make this a server side rendered page (if thats possible)
-// TODO: Autosize the text areas that display req input, req output and generated output
-// TODO: Make a seperate component for text areas that autosize
 
 export function Problem({ problemid }: any) {
   const [problem, setProblem]: any = useRecoilState(recoilProblem);
   const router = useRouter();
+  const testCaseRef = useRef(null);
+  const testOutputRef = useRef(null);
 
   // function autoSize() {
   //   Array.from(document.querySelectorAll("textarea")).forEach(autosize);
@@ -34,6 +35,7 @@ export function Problem({ problemid }: any) {
       }
     });
   }, []);
+
   if (!problem) return <div>Loading...</div>;
 
   return (
@@ -53,21 +55,11 @@ export function Problem({ problemid }: any) {
       <br></br>
       Test Case:
       <br></br>
-      <textarea
-        readOnly
-        style={{ resize: "none", outline: "none" }}
-        value={problem.problem_test_case}
-      ></textarea>
-      {/* <pre>{problem.problem_test_case}</pre> */}
+      <TextArea value={problem.problem_test_case} ref={testCaseRef} />
       <br></br>
       Output:
       <br></br>
-      {/* <p>{problem.problem_output}</p> */}
-      <textarea
-        readOnly
-        style={{ resize: "none", outline: "none" }}
-        value={problem.problem_output}
-      ></textarea>
+      <TextArea value={problem.problem_output} ref={testOutputRef} />
     </div>
   );
 }
