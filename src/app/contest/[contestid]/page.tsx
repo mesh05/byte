@@ -12,7 +12,6 @@ export default function Contest({ params }: any) {
       if (res.data.contest) {
         setContest(res.data.contest);
         setProblemSet(res.data.problem_set);
-        console.log(res.data);
       }
     });
   }, []);

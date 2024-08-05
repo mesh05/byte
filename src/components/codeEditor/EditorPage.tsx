@@ -14,6 +14,8 @@ import { Output } from "../ui/Output";
 import Split from "react-split";
 import "../../app/globals.css";
 
+// TODO: remember the code for each language and problem
+
 export default function EditorPage() {
   const [language, setLanguage]: any = useRecoilState(recoilLanguage);
   const [selectedLanguage, setSelectedLanguage] = useState("c");
@@ -61,7 +63,6 @@ export default function EditorPage() {
                 stdin: problem.problem_test_case,
               })
               .then((res) => {
-                console.log(res.data);
                 setOutput(res.data.output);
               });
           }}
@@ -78,7 +79,8 @@ export default function EditorPage() {
                 problem_id: problem.problem_id,
               })
               .then((res) => {
-                console.log(res.data);
+                // TODO: Handle code submission
+                window.alert(res.data.result);
               });
           }}
         >

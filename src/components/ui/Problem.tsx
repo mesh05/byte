@@ -24,7 +24,6 @@ export function Problem({ problemid }: any) {
     axios.get(`/api/problem/${problemid}`).then((res) => {
       try {
         if (res.data.problem) {
-          console.log(res.data.problem.problem_test_case);
           setProblem(res.data.problem);
           // autoSize();
         } else {
