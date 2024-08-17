@@ -1,5 +1,7 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import conn from "../db/db";
+import getConnection from "../db/db";
+import { pages } from "next/dist/build/templates/app-page";
+import { signIn } from "next-auth/react";
 
 export const authOptions = {
   providers: [
@@ -10,18 +12,27 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req): Promise<any> {
+        const conn = await getConnection();
         // Add logic here to look up the user from the DB
         if (req.body) {
-          const user: any = await conn.query(
-            "SELECT id,username,email,contest_id FROM auth_user WHERE username = ? AND password = ?",
-            [req.body.username, req.body.password]
-          );
+            const queryText = `
+              SELECT id, username, email, contest_id 
+              FROM auth_user 
+              WHERE username = $1 AND password = $2
+            `;
+          const queryValues = [req.body.username, req.body.password];
+          const result = await conn.query({
+            text: queryText,
+            values: queryValues,
+          });
+        
+          const user = result.rows[0];
           if (user) {
             return {
-              id: user[0][0].id,
-              name: user[0][0].username,
-              email: user[0][0].email,
-              contest: user[0][0].contest_id,
+              id: user.id,
+              name: user.username,
+              email: user.email,
+              contest: user.contest_id,
             };
           }
           return null;
@@ -55,6 +66,6 @@ export const authOptions = {
     },
   },
   pages: {
-    signIn: "/",
-  },
+    signIn:"/"
+  }
 };

@@ -1,11 +1,15 @@
-import mysql, { PoolOptions } from "mysql2";
+import { Pool } from 'pg';
 
-const access: PoolOptions = {
-  user: "root",
-  database: "byte",
-  password: "22EC1U3Inisl#wiswAPe",
-};
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false, // This is often required for SSL connections
+  },
+});
 
-const conn = mysql.createPool(access).promise();
+async function getConnection() {
+  const conn = await pool.connect();
+  return conn;
+}
 
-export default conn;
+export default getConnection;

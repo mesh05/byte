@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 export default function Home() {
   const session = useSession();
   const router = useRouter();
+  {console.log(session)}
   if (session.status === "loading")
     return <div>{JSON.stringify(session)}Loading...</div>;
   if (session.status === "authenticated")
