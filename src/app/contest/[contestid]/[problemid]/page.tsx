@@ -5,13 +5,16 @@ import Split from "react-split";
 import "../../../globals.css";
 import axios from "axios";
 
-export default function Workspace({ params }: any) {
-  if(!localStorage.getItem("byte")){
+export default function Workspace({
+  params,
+}: {
+  params: { problemid: number; contestid: string };
+}) {
+  if (!localStorage.getItem("byte")) {
     localStorage.setItem("byte", `{"contest":{},"non_contest":{}}`);
   }
   return (
     <div style={{ height: "100vh" }}>
-      
       {/* <div>NAVBAR</div> */}
       <Split
         className="split-horizontal"
@@ -19,7 +22,7 @@ export default function Workspace({ params }: any) {
         sizes={[50, 50]}
       >
         <Problem problemid={params.problemid} />
-        <EditorPage problemid={params.problemid} contestid={params.contestid}/>
+        <EditorPage problemid={params.problemid} contestid={params.contestid} />
       </Split>
     </div>
   );
