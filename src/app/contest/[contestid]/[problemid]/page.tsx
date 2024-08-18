@@ -6,6 +6,9 @@ import "../../../globals.css";
 import axios from "axios";
 
 export default function Workspace({ params }: any) {
+  if(!localStorage.getItem("byte")){
+    localStorage.setItem("byte", `{"contest":{},"non_contest":{}}`);
+  }
   return (
     <div style={{ height: "100vh" }}>
       
@@ -16,7 +19,7 @@ export default function Workspace({ params }: any) {
         sizes={[50, 50]}
       >
         <Problem problemid={params.problemid} />
-        <EditorPage problemid={params.problemid} />
+        <EditorPage problemid={params.problemid} contestid={params.contestid}/>
       </Split>
     </div>
   );

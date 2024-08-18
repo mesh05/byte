@@ -7,7 +7,6 @@ export async function GET(
   { params }: { params: { contest_id: string } },
   res: NextApiResponse
 ) {
-  console.log(params);
   const conn = await getConnection();
   const contestid = params.contest_id;
   const contest = await conn.query(
