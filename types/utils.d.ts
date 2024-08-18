@@ -1,15 +1,15 @@
 type ProblemProp = {
-  id: number;
-  title: string;
-  description: string;
-  difficulty: string;
+  problem_id: number;
+  problem_title: string;
+  problem_description: string;
+  problem_difficulty: string;
 };
 
 type ContestProp = {
-  id: string;
-  name: string;
-  status: "Ongoing" | "Completed" | "Upcoming";
-  startTime: Date;
-  endTime: Date;
-  creatorId: number;
+  contest_id: string;
+  contest_name: string;
+  status: "ongoing" | "completed" | "upcoming";
+  start_time: Date;
+  end_time: Date;
+  creator_user_id: number;
 };

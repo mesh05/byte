@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Contests() {
-  const [contests, setContests]: any = useState([]);
+  const [contests, setContests] = useState<ContestProp[]>([]);
   const router = useRouter();
   useEffect(() => {
     axios.get("/api/contests").then((res) => {
@@ -16,7 +16,7 @@ export default function Contests() {
   return (
     <div>
       <h2>Contests</h2>
-      {contests.map((contest: any) => {
+      {contests.map((contest: ContestProp) => {
         return (
           <div key={contest.contest_id}>
             Contest name: {contest.contest_name}

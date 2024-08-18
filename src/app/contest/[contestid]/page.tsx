@@ -25,13 +25,13 @@ export default function Contest({ params }: { params: { contestid: string } }) {
         <br></br>
         {problemSet.map((problem: ProblemProp) => {
           return (
-            <div key={problem.id}>
-              <p>
-                {problem.id} {problem.title}
-              </p>
+            <div key={problem.problem_id}>
+              <p>{problem.problem_title}</p>
               <button
                 onClick={() => {
-                  router.push(`/contest/${contest.id}/${problem.id}`);
+                  router.push(
+                    `/contest/${contest.contest_id}/${problem.problem_id}`,
+                  );
                 }}
               >
                 Solve
