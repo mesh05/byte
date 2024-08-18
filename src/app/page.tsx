@@ -2,6 +2,7 @@
 import { SignIn } from "@/components/ui/Signin";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Contest from './contest/[contestid]/page';
 
 // TODO: Decide the online judge to use
 // TODO: Remove all "any" types (eventually)
@@ -35,6 +36,14 @@ export default function Home() {
           }}
         >
           Contests
+        </button>
+        <br></br>
+        <br></br>
+        <button
+          onClick={() => {
+            router.push("/createcontest");
+          }}
+        >Create Contest
         </button>
       </div>
     );
