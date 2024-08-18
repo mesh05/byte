@@ -16,6 +16,7 @@ async function handler(
      WHERE c.contest_problem_id = $1`,
     [params.problem_id]
   );
+  conn.release();
   if (problem.rows.length === 0)
     return NextResponse.json({ status: "400", error: "Problem not found" });
   return NextResponse.json({ status: "success", problem: problem.rows[0] });

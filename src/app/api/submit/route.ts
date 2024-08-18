@@ -22,6 +22,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
      WHERE c.problem_id = $1`,
     [data.problem_id]
   );
+  conn.release();
   const hidden_case= result.rows;
   const hidden_test_case = hidden_case[0].hidden_test;
   const data_to_send = {
@@ -35,6 +36,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     stdin: hidden_test_case,
   };
   const output = await axios.post("http://54.252.187.225:2000/api/v2/execute", data_to_send);
+
   if (
     output.data.run.output.trim("\n") ===
     hidden_case[0].hidden_output.trim("\n")

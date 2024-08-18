@@ -21,6 +21,7 @@ export async function GET(
      WHERE contest_id = $1`,
     [contestid]
   );
+  conn.release();
   if (contest) {
     // If contest exists then its problem set will definitely exist(maybe)
     return NextResponse.json({

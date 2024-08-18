@@ -25,7 +25,7 @@ export const authOptions = {
             text: queryText,
             values: queryValues,
           });
-        
+          conn.release();
           const user = result.rows[0];
           if (user) {
             return {
