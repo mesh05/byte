@@ -14,7 +14,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
   const code = data.code;
   const language = data.language;
   const conn = await getConnection();
-    const hidden_case: any = await conn.query(
+    const result: any = await conn.query(
     `SELECT c.problem_id, p.hidden_test, p.hidden_output 
      FROM problems AS p 
      JOIN contest_problems AS c 
@@ -22,8 +22,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
      WHERE c.problem_id = $1`,
     [data.problem_id]
   );
-  const hidden_test_case = hidden_case[0][0].hidden_test;
-  const output = await axios.post("http://localhost:2000/api/v2/execute", {
+  const hidden_case= result.rows;
+  const hidden_test_case = hidden_case[0].hidden_test;
+  const data_to_send = {
     language: language,
     version: LANG[language],
     files: [
@@ -32,10 +33,11 @@ export async function POST(req: NextRequest, res: NextResponse) {
       },
     ],
     stdin: hidden_test_case,
-  });
+  };
+  const output = await axios.post("http://54.252.187.225:2000/api/v2/execute", data_to_send);
   if (
     output.data.run.output.trim("\n") ===
-    hidden_case[0][0].hidden_output.trim("\n")
+    hidden_case[0].hidden_output.trim("\n")
   ) {
     return NextResponse.json({
       status: "successfully received code",

@@ -7,6 +7,7 @@ export async function GET(
   { params }: { params: { contest_id: string } },
   res: NextApiResponse
 ) {
+  console.log(params);
   const conn = await getConnection();
   const contestid = params.contest_id;
   const contest = await conn.query(
@@ -25,7 +26,7 @@ export async function GET(
     // If contest exists then its problem set will definitely exist(maybe)
     return NextResponse.json({
       status: "success",
-      contest: contest.rows,
+      contest: contest.rows[0],
       problem_set: problem_set.rows,
     });
   }

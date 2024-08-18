@@ -26,13 +26,13 @@ export default function Contest({ params }: any) {
         return (
           <div key={problem.problem_id}>
             <p>
-              {problem.problem_id}) {problem.problem_title}
+              {problem.problem_id} {problem.problem_title}
             </p>
             <button
-              onClick={() =>
+              onClick={() =>{
                 router.push(
                   `/contest/${contest.contest_id}/${problem.contest_problem_id}`
-                )
+                )}
               }
             >
               Solve

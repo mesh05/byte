@@ -8,6 +8,7 @@ import axios from "axios";
 export default function Workspace({ params }: any) {
   return (
     <div style={{ height: "100vh" }}>
+      
       {/* <div>NAVBAR</div> */}
       <Split
         className="split-horizontal"
@@ -15,7 +16,7 @@ export default function Workspace({ params }: any) {
         sizes={[50, 50]}
       >
         <Problem problemid={params.problemid} />
-        <EditorPage />
+        <EditorPage problemid={params.problemid} />
       </Split>
     </div>
   );

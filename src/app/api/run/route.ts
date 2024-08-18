@@ -12,7 +12,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
   const data = await req.json();
   const code = data.code;
   const language = data.language;
-  const output = await axios.post("http://localhost:2000/api/v2/execute", {
+  const output = await axios.post("http://54.252.187.225:2000/api/v2/execute", {
     language: language,
     version: LANG[language],
     files: [

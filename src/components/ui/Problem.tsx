@@ -15,7 +15,6 @@ export function Problem({ problemid }: any) {
   const router = useRouter();
   const testCaseRef = useRef(null);
   const testOutputRef = useRef(null);
-
   // function autoSize() {
   //   Array.from(document.querySelectorAll("textarea")).forEach(autosize);
   // }

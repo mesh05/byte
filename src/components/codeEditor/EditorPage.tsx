@@ -4,7 +4,7 @@ import { javascriptLanguage } from "@codemirror/lang-javascript";
 // import { javaLanguage } from "@codemirror/lang-java";
 // import { pythonLanguage } from "@codemirror/lang-python";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import axios from "axios";
 import LanguageSelector from "./LanguageSelector";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -16,14 +16,21 @@ import "../../app/globals.css";
 
 // TODO: remember the code for each language and problem
 
-export default function EditorPage() {
+export default function EditorPage({ problemid }: any) {
   const [language, setLanguage]: any = useRecoilState(recoilLanguage);
   const [selectedLanguage, setSelectedLanguage] = useState("c");
   const [code, setCode] = useState(language[selectedLanguage].code);
   const [output, setOutput] = useState({ run: { output: "" } });
   const [problem, setProblem]: any = useRecoilState(recoilProblem);
   let extensions = [language[selectedLanguage].lang];
+  useEffect(() => {
 
+    console.log(problem);
+    console.log("fvgbhnjmk,l");
+    if(localStorage.getItem(`code-${problem.problem_id}-${selectedLanguage}`)){
+      setCode(localStorage.getItem(`code-${problem.problem_id}-${selectedLanguage}`));
+    }
+  }, [selectedLanguage]);
   return (
     <div style={{ height: "100vh" }}>
       <div>
@@ -48,6 +55,7 @@ export default function EditorPage() {
               minHeight="90vh"
               onChange={(editor, change) => {
                 setCode(editor);
+                localStorage.setItem(`code-${problem.problem_id}-${selectedLanguage}`, editor);
               }}
             />
           </div>
