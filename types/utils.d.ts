@@ -3,6 +3,12 @@ type ProblemProp = {
   problem_title: string;
   problem_description: string;
   problem_difficulty: string;
+  problem_test_case: string;
+  problem_output: string;
+};
+
+type ContestProblemProp = ProblemProp & {
+  contest_problem_id: numbe;
 };
 
 type ContestProp = {

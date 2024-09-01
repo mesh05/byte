@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 export default function Contest({ params }: { params: { contestid: string } }) {
   const [contest, setContest] = useState<ContestProp>();
-  const [problemSet, setProblemSet] = useState<ProblemProp[]>([]);
+  const [problemSet, setProblemSet] = useState<ContestProblemProp[]>([]);
   const router = useRouter();
   useEffect(() => {
     axios.get(`/api/contests/${params.contestid}`).then((res) => {
@@ -23,14 +23,14 @@ export default function Contest({ params }: { params: { contestid: string } }) {
         <br></br>
         Problem Statements
         <br></br>
-        {problemSet.map((problem: ProblemProp) => {
+        {problemSet.map((problem: ContestProblemProp) => {
           return (
             <div key={problem.problem_id}>
               <p>{problem.problem_title}</p>
               <button
                 onClick={() => {
                   router.push(
-                    `/contest/${contest.contest_id}/${problem.problem_id}`,
+                    `/contest/${contest.contest_id}/${problem.contest_problem_id}`,
                   );
                 }}
               >

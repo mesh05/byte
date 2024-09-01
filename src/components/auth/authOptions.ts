@@ -1,9 +1,11 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import getConnection from "../db/db";
+import db from "@/db/db";
 import { pages } from "next/dist/build/templates/app-page";
 import { signIn } from "next-auth/react";
 import { JWT } from "next-auth/jwt";
 import { Session, User } from "next-auth";
+import { userTable } from "@/db/schema";
+import { and, eq } from "drizzle-orm";
 
 export const authOptions = {
   providers: [
@@ -14,24 +16,25 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req): Promise<any> {
-        const conn = await getConnection();
         // Add logic here to look up the user from the DB
         const loginDetails = req.body;
-        if (loginDetails) {
-          const queryText = `
-              SELECT id, username, email, contest_id
-              FROM auth_user
-              WHERE username = $1 AND password = $2
-            `;
-          const queryValues = [loginDetails.username, loginDetails.password];
-          const result = await conn.query({
-            text: queryText,
-            values: queryValues,
-          });
 
-          const user: User = result.rows[0];
-          if (user) {
-            return user;
+        if (loginDetails) {
+          const user = await db
+            .select({
+              id: userTable.id,
+              username: userTable.username,
+              email: userTable.email,
+            })
+            .from(userTable)
+            .where(
+              and(
+                eq(loginDetails.username, userTable.username),
+                eq(loginDetails.password, userTable.password),
+              ),
+            );
+          if (user[0]) {
+            return user[0];
           }
           return null;
         }

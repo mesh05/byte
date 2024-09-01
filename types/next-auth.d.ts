@@ -3,10 +3,9 @@ import NextAuth, { User } from "next-auth";
 declare module "next-auth" {
   interface DefaultUser {
     user: {
-      id: number;
+      id: string;
       username: string;
       email: string;
-      contest_id: number;
     };
   }
   interface Session {

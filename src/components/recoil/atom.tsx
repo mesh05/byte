@@ -31,5 +31,5 @@ export const recoilLanguage = atom({
 
 export const recoilProblem = atom({
   key: "recoilProblem",
-  default: {},
+  default: {} as ProblemProp,
 });

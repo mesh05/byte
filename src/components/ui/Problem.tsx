@@ -10,8 +10,8 @@ import { TextArea } from "@/components/ui/TextArea";
 
 // TODO: Make this a server side rendered page (if thats possible)
 
-export function Problem({ problemid }: any) {
-  const [problem, setProblem]: any = useRecoilState(recoilProblem);
+export function Problem({ problemid }: { problemid: number }) {
+  const [problem, setProblem] = useRecoilState(recoilProblem);
   const router = useRouter();
   const testCaseRef = useRef(null);
   const testOutputRef = useRef(null);
@@ -24,7 +24,6 @@ export function Problem({ problemid }: any) {
       try {
         if (res.data.problem) {
           setProblem(res.data.problem);
-          // autoSize();
         } else {
           throw new Error("Problem doesn't exist");
         }

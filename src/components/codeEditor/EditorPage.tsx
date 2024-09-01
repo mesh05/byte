@@ -4,7 +4,7 @@ import { javascriptLanguage } from "@codemirror/lang-javascript";
 // import { javaLanguage } from "@codemirror/lang-java";
 // import { pythonLanguage } from "@codemirror/lang-python";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import LanguageSelector from "./LanguageSelector";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -16,12 +16,18 @@ import "../../app/globals.css";
 
 // TODO: remember the code for each language and problem
 
-export default function EditorPage({ problemid,contestid }: any) {
+export default function EditorPage({
+  problemid,
+  contestid,
+}: {
+  problemid: number;
+  contestid: string;
+}) {
   const [language, setLanguage]: any = useRecoilState(recoilLanguage);
   const [selectedLanguage, setSelectedLanguage] = useState("c");
   const [code, setCode] = useState(language[selectedLanguage].code);
   const [output, setOutput] = useState({ run: { output: "" } });
-  const [problem, setProblem]: any = useRecoilState(recoilProblem);
+  const [problem, setProblem] = useRecoilState(recoilProblem);
   const [problem_id, setProblem_id] = useState(problemid);
   const [contest_id, setContest_id] = useState(contestid);
   let extensions = [language[selectedLanguage].lang];
@@ -33,13 +39,13 @@ export default function EditorPage({ problemid,contestid }: any) {
     let byte;
     if (byteString) {
       byte = JSON.parse(byteString);
-    } 
+    }
     if (byte.contest[`${contest_id}-${problem_id}`]) {
-      if(byte.contest[`${contest_id}-${problem_id}`][selectedLanguage]){
+      if (byte.contest[`${contest_id}-${problem_id}`][selectedLanguage]) {
         setCode(byte.contest[`${contest_id}-${problem_id}`][selectedLanguage]);
       }
     }
-  }, [selectedLanguage,contest_id,problem_id]);
+  }, [selectedLanguage, contest_id, problem_id]);
   return (
     <div style={{ height: "100vh" }}>
       <div>
@@ -66,17 +72,21 @@ export default function EditorPage({ problemid,contestid }: any) {
                 setCode(editor);
                 const byteString = localStorage.getItem("byte");
                 let byte;
-                
+
                 if (byteString) {
                   byte = JSON.parse(byteString);
                 } else {
                   return;
                 }
-                if (typeof byte.contest[`${contest_id}-${problem_id}`] === 'undefined') {
+                if (
+                  typeof byte.contest[`${contest_id}-${problem_id}`] ===
+                  "undefined"
+                ) {
                   byte.contest[`${contest_id}-${problem_id}`] = {};
                 }
-                byte.contest[`${contest_id}-${problem_id}`][selectedLanguage] = editor;
-                
+                byte.contest[`${contest_id}-${problem_id}`][selectedLanguage] =
+                  editor;
+
                 localStorage.setItem("byte", JSON.stringify(byte));
               }}
             />

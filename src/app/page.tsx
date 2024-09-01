@@ -2,7 +2,7 @@
 import { SignIn } from "@/components/ui/Signin";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import Contest from './contest/[contestid]/page';
+import Contest from "./contest/[contestid]/page";
 
 // TODO: Decide the online judge to use
 // TODO: Remove all "any" types (eventually)
@@ -12,7 +12,6 @@ import Contest from './contest/[contestid]/page';
 export default function Home() {
   const session = useSession();
   const router = useRouter();
-  {console.log(session)}
   if (session.status === "loading")
     return <div>{JSON.stringify(session)}Loading...</div>;
   if (session.status === "authenticated")
@@ -43,7 +42,8 @@ export default function Home() {
           onClick={() => {
             router.push("/createcontest");
           }}
-        >Create Contest
+        >
+          Create Contest
         </button>
       </div>
     );
