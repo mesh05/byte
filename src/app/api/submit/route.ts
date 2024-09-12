@@ -1,6 +1,8 @@
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
-import getConnection from "@/components/db/db";
+import db from "@/db/db";
+import { contestProblemTable, contestTable, problemTable } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
 const LANG: any = {
   c: "10.2.0",
@@ -12,19 +14,28 @@ const LANG: any = {
 export async function POST(req: NextRequest, res: NextResponse) {
   const data = await req.json();
   const code = data.code;
+  console.log(data.problem_id);
   const language = data.language;
-  const conn = await getConnection();
-    const result: any = await conn.query(
-    `SELECT c.problem_id, p.hidden_test, p.hidden_output 
-     FROM problems AS p 
-     JOIN contest_problems AS c 
-     ON c.problem_id = p.problem_id 
-     WHERE c.problem_id = $1`,
-    [data.problem_id]
-  );
-  conn.release();
-  const hidden_case= result.rows;
-  const hidden_test_case = hidden_case[0].hidden_test;
+  const result = await db
+    .select()
+    .from(problemTable)
+    .innerJoin(
+      contestProblemTable,
+      eq(contestProblemTable.problemId, problemTable.id),
+    )
+    .where(eq(contestProblemTable.problemId, data.problem_id));
+  //   const result: any = await conn.query(
+  //   `SELECT c.problem_id, p.hidden_test, p.hidden_output
+  //    FROM problems AS p
+  //    JOIN contest_problems AS c
+  //    ON c.problem_id = p.problem_id
+  //    WHERE c.problem_id = $1`,
+  //   [data.problem_id]
+  // );
+  // conn.release();
+  const problem = { ...result[0].problem, ...result[0].contest_problem };
+  const hidden_test_case = problem.hiddenTestCase;
+  const hidden_output = problem.hiddenOutput;
   const data_to_send = {
     language: language,
     version: LANG[language],
@@ -35,12 +46,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
     ],
     stdin: hidden_test_case,
   };
-  const output = await axios.post("http://54.252.187.225:2000/api/v2/execute", data_to_send);
+  const output = await axios.post(
+    "http://54.252.187.225:2000/api/v2/execute",
+    data_to_send,
+  );
 
-  if (
-    output.data.run.output.trim("\n") ===
-    hidden_case[0].hidden_output.trim("\n")
-  ) {
+  if (output.data.run.output.trim() === hidden_output.trim()) {
     return NextResponse.json({
       status: "successfully received code",
       result: "correct",
