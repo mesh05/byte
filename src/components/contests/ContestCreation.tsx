@@ -53,7 +53,7 @@ const ContestCreation: React.FC = () => {
           contest_start_time: startTime,
           contest_end_time: endTime,
           contest_problems: selectedProblems.map(Number),
-          user_id: session.data.user.id,
+          user_id: session.data?.user.id,
         };
         axios.post("/api/contests/createcontest", contestData).then((res) => {
           if (res.data.success) {
