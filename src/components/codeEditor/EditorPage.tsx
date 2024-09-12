@@ -99,7 +99,7 @@ export default function EditorPage(params: any) {
               .post("/api/run", {
                 language: selectedLanguage,
                 code: code,
-                stdin: problem.testCase,
+                stdin: params.problem.testCase,
               })
               .then((res) => {
                 setOutput(res.data.output);
@@ -115,7 +115,7 @@ export default function EditorPage(params: any) {
               .post("/api/submit", {
                 language: selectedLanguage,
                 code: code,
-                problem_id: problem.problemId,
+                problem_id: params.problem.problemId,
               })
               .then((res) => {
                 // TODO: Handle code submission
