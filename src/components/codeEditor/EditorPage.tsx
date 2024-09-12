@@ -8,7 +8,11 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import LanguageSelector from "./LanguageSelector";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { recoilLanguage, recoilProblem } from "../recoil/atom";
+import {
+  recoilLanguage,
+  recoilProblem,
+  recoilProblemSet,
+} from "../recoil/atom";
 import { version } from "os";
 import { Output } from "../ui/Output";
 import Split from "react-split";
@@ -16,20 +20,14 @@ import "../../app/globals.css";
 
 // TODO: remember the code for each language and problem
 
-export default function EditorPage({
-  problemid,
-  contestid,
-}: {
-  problemid: number;
-  contestid: string;
-}) {
+export default function EditorPage(params: any) {
   const [language, setLanguage]: any = useRecoilState(recoilLanguage);
   const [selectedLanguage, setSelectedLanguage] = useState("c");
   const [code, setCode] = useState(language[selectedLanguage].code);
   const [output, setOutput] = useState({ run: { output: "" } });
   const [problem, setProblem] = useRecoilState(recoilProblem);
-  const [problem_id, setProblem_id] = useState(problemid);
-  const [contest_id, setContest_id] = useState(contestid);
+  const problem_id = params.problem.contestProblemId;
+  const contest_id = params.problem.contestId;
   let extensions = [language[selectedLanguage].lang];
   useEffect(() => {
     if (!localStorage.getItem("byte")) {
@@ -100,7 +98,7 @@ export default function EditorPage({
               .post("/api/run", {
                 language: selectedLanguage,
                 code: code,
-                stdin: problem.problem_test_case,
+                stdin: problem.testCase,
               })
               .then((res) => {
                 setOutput(res.data.output);
@@ -116,7 +114,7 @@ export default function EditorPage({
               .post("/api/submit", {
                 language: selectedLanguage,
                 code: code,
-                problem_id: problem.problem_id,
+                problem_id: problem.problemId,
               })
               .then((res) => {
                 // TODO: Handle code submission

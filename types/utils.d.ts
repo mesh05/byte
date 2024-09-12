@@ -1,21 +1,21 @@
 type ProblemProp = {
-  problem_id: number;
-  problem_title: string;
-  problem_description: string;
-  problem_difficulty: string;
-  problem_test_case: string;
-  problem_output: string;
+  id: number;
+  title: string;
+  description: string;
+  difficulty: string;
+  test_case: string;
+  output: string;
 };
 
 type ContestProblemProp = ProblemProp & {
-  contest_problem_id: numbe;
+  contest_problem_id: number;
 };
 
 type ContestProp = {
-  contest_id: string;
-  contest_name: string;
-  status: "ongoing" | "completed" | "upcoming";
+  id: string;
+  name: string;
+  status: "Ongoing" | "Completed" | "Upcoming";
   start_time: Date;
   end_time: Date;
-  creator_user_id: number;
+  creator_user_id: string;
 };

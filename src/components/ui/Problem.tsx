@@ -3,37 +3,18 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { useRecoilState } from "recoil";
-import { recoilProblem } from "../recoil/atom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { recoilProblem, recoilProblemSet } from "../recoil/atom";
 import { TextArea } from "@/components/ui/TextArea";
-// import autosize from "autosize";
 
 // TODO: Make this a server side rendered page (if thats possible)
 
-export function Problem({ problemid }: { problemid: number }) {
-  const [problem, setProblem] = useRecoilState(recoilProblem);
+export function Problem(params: any) {
   const router = useRouter();
   const testCaseRef = useRef(null);
   const testOutputRef = useRef(null);
-  // function autoSize() {
-  //   Array.from(document.querySelectorAll("textarea")).forEach(autosize);
-  // }
 
-  useEffect(() => {
-    axios.get(`/api/problem/${problemid}`).then((res) => {
-      try {
-        if (res.data.problem) {
-          setProblem(res.data.problem);
-        } else {
-          throw new Error("Problem doesn't exist");
-        }
-      } catch (err) {
-        router.back();
-      }
-    });
-  }, []);
-
-  if (!problem) return <div>Loading...</div>;
+  if (!params.problem) return <div>Loading...</div>;
 
   return (
     <div>
@@ -46,17 +27,17 @@ export function Problem({ problemid }: { problemid: number }) {
         back
       </button>
       <h1 className="mb-4 font-bold leading-none tracking-tight lg:text-5xl">
-        {problem.problem_title}
+        {params.problem.title}
       </h1>
-      <p>{problem.problem_description}</p>
+      <p>{params.problem.description}</p>
       <br></br>
       Test Case:
       <br></br>
-      <TextArea value={problem.problem_test_case} ref={testCaseRef} />
+      <TextArea value={params.problem.testCase} ref={testCaseRef} />
       <br></br>
       Output:
       <br></br>
-      <TextArea value={problem.problem_output} ref={testOutputRef} />
+      <TextArea value={params.problem.output} ref={testOutputRef} />
     </div>
   );
 }

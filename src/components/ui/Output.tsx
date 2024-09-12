@@ -1,11 +1,11 @@
 import { useRecoilState } from "recoil";
-import { recoilProblem } from "../recoil/atom";
+import { recoilProblemSet } from "../recoil/atom";
 import { useRef, useState } from "react";
 import { TextArea } from "./TextArea";
 
 export function Output({ output }: any) {
   const outputRef = useRef(null);
-  const [problem, setProblem]: any = useRecoilState(recoilProblem);
+  const [problem, setProblem]: any = useRecoilState(recoilProblemSet);
   const [firstRun, setFirstRun] = useState(true);
 
   return (
@@ -14,8 +14,8 @@ export function Output({ output }: any) {
       {output.run.output === ""
         ? ""
         : problem.problem_output === output.run.output.trim("\n")
-        ? "Correct"
-        : "Incorrect"}
+          ? "Correct"
+          : "Incorrect"}
       <br></br>
       OUTPUT:
       <br></br>

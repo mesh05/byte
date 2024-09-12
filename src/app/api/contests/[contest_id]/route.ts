@@ -1,33 +1,39 @@
-import getConnection from "@/components/db/db";
+import db from "@/db/db";
+import { contestProblemTable, contestTable, problemTable } from "@/db/schema";
+import { eq } from "drizzle-orm";
 import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 
 export async function GET(
   req: NextApiRequest,
   { params }: { params: { contest_id: string } },
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
-  const conn = await getConnection();
   const contestid = params.contest_id;
-  const contest = await conn.query(
-    "SELECT * FROM contest WHERE contest_id = $1",
-    [contestid]
-  );
-  const problem_set = await conn.query(
-    `SELECT c.problem_id, p.problem_title, c.contest_problem_id 
-     FROM problems AS p 
-     INNER JOIN contest_problems AS c 
-     ON c.problem_id = p.problem_id 
-     WHERE contest_id = $1`,
-    [contestid]
-  );
-  conn.release();
-  if (contest) {
+  const contest = await db
+    .select()
+    .from(contestTable)
+    .where(eq(contestTable.id, contestid));
+  const problemSetResult = await db
+    .select()
+    .from(problemTable)
+    .leftJoin(
+      contestProblemTable,
+      eq(problemTable.id, contestProblemTable.problemId),
+    )
+    .where(eq(contestProblemTable.contestId, contestid))
+    .orderBy(contestProblemTable.contestProblemId);
+  var problemSet: any = [];
+  problemSetResult.map((prob) => {
+    const { problem, contest_problem } = prob;
+    problemSet.push({ ...problem, ...contest_problem });
+  });
+  if (contest[0]) {
     // If contest exists then its problem set will definitely exist(maybe)
     return NextResponse.json({
       status: "success",
-      contest: contest.rows[0],
-      problem_set: problem_set.rows,
+      contest: contest[0],
+      problem_set: problemSet,
     });
   }
   // return NextResponse.json({ status: "error", message: "Contest not found" });

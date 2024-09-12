@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import getConnection from "@/components/db/db";
+import db from "@/db/db";
+import { contestTable } from "@/db/schema";
 
 export async function GET(req: NextRequest, res: NextResponse) {
-  const conn = await getConnection();
-  const result = await conn.query("SELECT * FROM contest");
-  conn.release();
-  return NextResponse.json({ status: "success", contests: result.rows });
+  const result = await db.select().from(contestTable);
+  return NextResponse.json({ status: "success", contests: result });
 }
