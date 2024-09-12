@@ -1,3 +1,4 @@
+"use client";
 import CodeMirror from "@uiw/react-codemirror";
 import { javascriptLanguage } from "@codemirror/lang-javascript";
 // import { cppLanguage } from "@codemirror/lang-cpp";
