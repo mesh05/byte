@@ -5,7 +5,7 @@ import {
   unique,
   uuid,
 } from "drizzle-orm/pg-core";
-import contestTable from "./contest";
+import contestTable from "./contest"; 
 import problemTable from "./problem";
 import { uniqueIndex } from "drizzle-orm/sqlite-core";
 
