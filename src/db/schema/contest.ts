@@ -17,5 +17,12 @@ const contestTable = pgTable("contest", {
   startTime: timestamp("startTime").defaultNow().notNull(),
   endTime: timestamp("endTime").defaultNow().notNull(),
 });
+/*
+name: contest_title,
+      status: 'Upcoming',
+      creatorId: user_id,
+      startTime: contest_start_time,
+      endTime: contest_end_time,
+*/ 
 
 export default contestTable;

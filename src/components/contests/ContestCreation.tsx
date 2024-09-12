@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import { date, PgDate } from "drizzle-orm/pg-core";
 interface ContestCreate {
   contest_title: string;
   contest_description: string;
@@ -47,24 +48,15 @@ const ContestCreation: React.FC = () => {
         const startTime = formData.get("startTime") as string;
         const endTime = formData.get("endTime") as string;
 
-        // Extract the time portion from the datetime string
-        const startTimeOnly = new Date(startTime).toLocaleTimeString("en-GB", {
-          hour12: false,
-        });
-        const endTimeOnly = new Date(endTime).toLocaleTimeString("en-GB", {
-          hour12: false,
-        });
-
         const contestData = {
           contest_title: contestName,
-          contest_start_time: startTimeOnly,
-          contest_end_time: endTimeOnly,
+          contest_start_time: startTime,
+          contest_end_time: endTime,
           contest_problems: selectedProblems.map(Number),
           user_id: session.data.user.id,
         };
-        console.log(contestData);
         axios.post("/api/contests/createcontest", contestData).then((res) => {
-          if (res.data) {
+          if (res.data.success) {
             alert("Contest created successfully");
             setContestName("");
             setStartTime("");
@@ -79,6 +71,7 @@ const ContestCreation: React.FC = () => {
   useEffect(() => {
     console.log("Fetching problems");
     axios.get("/api/problem").then((res) => {
+      console.log(res.data);
       if (res.data) {
         setProblems(res.data.problems);
       }
@@ -121,15 +114,15 @@ const ContestCreation: React.FC = () => {
         {problems.length > 0 && (
           <ul>
             {problems.map((problem: any) => (
-              <li key={problem.problem_id}>
+              <li key={problem.id}>
                 <label>
                   <input
                     type="checkbox"
-                    value={problem.problem_id}
+                    value={problem.id}
                     onChange={handleCheckboxChange}
                   />
-                  <h3>{problem.problem_title}</h3>
-                  <p>{problem.problem_description}</p>
+                  <h3>{problem.title}</h3>
+                  <p>{problem.description}</p>
                 </label>
               </li>
             ))}
