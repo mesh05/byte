@@ -18,17 +18,19 @@ export default function Workspace({
   const router = useRouter();
 
   useEffect(() => {
-    axios.get(`/api/problem/${params.problemid}`).then((res) => {
-      try {
-        if (res.data.problem) {
-          setProblem(res.data.problem);
-        } else {
-          throw new Error("Problem doesn't exist");
+    axios
+      .get(`/api/problem/${params.contestid}/${params.problemid}`)
+      .then((res) => {
+        try {
+          if (res.data.problem) {
+            setProblem(res.data.problem);
+          } else {
+            throw new Error("Problem doesn't exist");
+          }
+        } catch (err) {
+          // router.back();
         }
-      } catch (err) {
-        // router.back();
-      }
-    });
+      });
   }, []);
 
   if (!localStorage.getItem("byte")) {

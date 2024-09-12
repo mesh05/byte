@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@/db/db";
 import { contestProblemTable, problemTable } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 async function handler(
   req: NextRequest,
-  { params }: { params: { problem_id: string } },
+  { params }: { params: { contest_id: string; problem_id: string } },
   res: NextResponse,
 ) {
   const problem = await db
@@ -15,7 +15,12 @@ async function handler(
       contestProblemTable,
       eq(contestProblemTable.problemId, problemTable.id),
     )
-    .where(eq(contestProblemTable.contestProblemId, Number(params.problem_id)));
+    .where(
+      and(
+        eq(contestProblemTable.contestProblemId, Number(params.problem_id)),
+        eq(contestProblemTable.contestId, params.contest_id),
+      ),
+    );
   const problemResult = {
     ...problem[0].problem,
     ...problem[0].contest_problem,
