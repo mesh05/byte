@@ -33,6 +33,7 @@ export function SignIn() {
             signIn("credentials", {
               username,
               password,
+              redirect: true,
             });
           }}
         >
