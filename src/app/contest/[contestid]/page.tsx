@@ -33,6 +33,7 @@ export default function Contest({ params }: { params: { contestid: string } }) {
             <div key={problem.id}>
               <p>{problem.title}</p>
               <button
+                className="btn bg-yellow-500 hover:bg-yellow-600 text-white"
                 onClick={() => {
                   router.push(
                     `/contest/${contest.id}/${problem.contestProblemId}`,

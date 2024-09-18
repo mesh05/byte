@@ -2,7 +2,6 @@
 import EditorPage from "@/components/codeEditor/EditorPage";
 import { Problem } from "@/components/ui/Problem";
 import Split from "react-split";
-import "../../../globals.css";
 import axios from "axios";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { recoilProblem } from "@/components/recoil/atom";
