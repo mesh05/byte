@@ -23,7 +23,6 @@ export async function POST(req: NextRequest) {
       startTime: startTime,
       endTime: endTime,
     }).returning({ contest_id: contestTable.id});
-    console.log(result)
     const contest_id = result[0].contest_id;
     const contestProblemEntries = contest_problems.map((problem_id:number, index:number) => ({
       contestId: contest_id,
@@ -33,7 +32,6 @@ export async function POST(req: NextRequest) {
     
     try {
       const result = await db.insert(contestProblemTable).values(contestProblemEntries);
-      console.log(result);
     } catch (error) {
       console.error(`Error inserting problems into contest ${contest_id}:`, error);
       return NextResponse.json({ success: false, error: error });

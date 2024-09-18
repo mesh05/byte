@@ -14,7 +14,6 @@ const LANG: any = {
 export async function POST(req: NextRequest, res: NextResponse) {
   const data = await req.json();
   const code = data.code;
-  console.log(data.problem_id);
   const language = data.language;
   const result = await db
     .select()
@@ -50,7 +49,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
     "http://54.252.187.225:2000/api/v2/execute",
     data_to_send,
   );
-
   if (output.data.run.output.trim() === hidden_output.trim()) {
     return NextResponse.json({
       status: "successfully received code",

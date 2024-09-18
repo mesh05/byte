@@ -102,6 +102,7 @@ export default function EditorPage(params: any) {
                 stdin: params.problem.testCase,
               })
               .then((res) => {
+                console.log(res.data);
                 setOutput(res.data.output);
               });
           }}

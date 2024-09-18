@@ -5,6 +5,5 @@ import { problemTable } from "@/db/schema";
 
 export async function GET(req: NextRequest, res: NextResponse) {
   const result = await db.select().from(problemTable);
-  console.log(result);
   return NextResponse.json({ status: "success", problems: result });
 }
