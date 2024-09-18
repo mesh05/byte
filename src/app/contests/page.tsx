@@ -20,7 +20,10 @@ export default function Contests() {
         return (
           <div key={contest.id}>
             Contest name: {contest.name}
-            <button onClick={() => router.push(`/contest/${contest.id}`)}>
+            <button
+              className="btn bg-green-500 text-white"
+              onClick={() => router.push(`/contest/${contest.id}`)}
+            >
               Attempt
             </button>
             <br></br>

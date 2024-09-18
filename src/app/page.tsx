@@ -21,6 +21,7 @@ export default function Home() {
         <br></br>
         <br></br>
         <button
+          className="btn btn-ghost"
           onClick={() => {
             signOut();
           }}
@@ -30,6 +31,7 @@ export default function Home() {
         <br></br>
         <br></br>
         <button
+          className="btn btn-ghost"
           onClick={() => {
             router.push("/contests");
           }}
@@ -39,6 +41,7 @@ export default function Home() {
         <br></br>
         <br></br>
         <button
+          className="btn btn-ghost"
           onClick={() => {
             router.push("/createcontest");
           }}
